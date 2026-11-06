@@ -41,7 +41,7 @@ public class BookWiewControler {
     }
 
     @PostMapping("/books/add")
-    public String addBook(@Valid @ModelAttribute("bookRequest") BookRequest request, BindingResult result, неModel model) {
+    public String addBook(@Valid @ModelAttribute("bookRequest") BookRequest request, BindingResult result, Model model) {
 
         if (result.hasErrors()) {
             model.addAttribute("authors", authorService.getAll());
@@ -81,4 +81,10 @@ public class BookWiewControler {
         bookService.update(id, request);
         return "redirect:/library/books";
     }
-}
+    @PostMapping("/books/{id}/delete")
+    public String deleteBook(@PathVariable Long id) {
+        bookService.delete(id);
+        return "redirect:/library/books";
+    }
+    }
+
