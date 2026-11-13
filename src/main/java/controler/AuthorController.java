@@ -14,17 +14,20 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/library")
 public class AuthorController {
     private final AuthorService authorService;
+
     @GetMapping("/authors")
     public String authors(Model model) {
         model.addAttribute("authors", authorService.getAll());
         return "authors";
     }
+
     @GetMapping("/authors/add")
     public String addAuthorPage(Model model) {
         model.addAttribute("authorRequest", new AuthorRequest());
         model.addAttribute("editMode", false);
         return "author-form";
     }
+
     @PostMapping("/authors/add")
     public String addAuthor(@Valid @ModelAttribute("authorRequest") AuthorRequest request, BindingResult result, Model model) {
         if (result.hasErrors()) {
@@ -34,6 +37,7 @@ public class AuthorController {
         authorService.create(request);
         return "redirect:/library/authors";
     }
+
     @GetMapping("/authors/{id}/edit")
     public String editAuthorPage(@PathVariable Long id, Model model) {
         Author author = authorService.getById(id);
@@ -46,6 +50,7 @@ public class AuthorController {
         model.addAttribute("editMode", true);
         return "author-form";
     }
+
     @PostMapping("/authors/{id}/edit")
     public String updateAuthor(@PathVariable Long id, @Valid @ModelAttribute("authorRequest") AuthorRequest request, BindingResult result, Model model) {
         if (result.hasErrors()) {
@@ -53,6 +58,7 @@ public class AuthorController {
             model.addAttribute("editMode", true);
             return "author-form";
         }
+
         authorService.update(id, request);
         return "redirect:/library/authors";
     }
